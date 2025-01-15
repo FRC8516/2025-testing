@@ -49,13 +49,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    NamedCommands.registerCommand("test");
-    NamedCommands.registerCommand("test2");
-     m_autoChooser = AutoBuilder.buildAutoChooser();
-     Shuffleboard.getTab("Auto").add("Auto Mode", m_autoChooser)
-    // Configure the button bindings
-    configureButtonBindings();
-
+   
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
