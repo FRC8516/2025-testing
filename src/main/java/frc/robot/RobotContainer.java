@@ -14,6 +14,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -24,8 +25,13 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.LimelightHelpers;
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -43,6 +49,10 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    NamedCommands.registerCommand("test");
+    NamedCommands.registerCommand("test2");
+     m_autoChooser = AutoBuilder.buildAutoChooser();
+     Shuffleboard.getTab("Auto").add("Auto Mode", m_autoChooser)
     // Configure the button bindings
     configureButtonBindings();
 
@@ -74,7 +84,7 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
         () -> m_robotDrive.setX(),
         m_robotDrive));
-
+    
     m_driverController.start().onTrue(Commands.runOnce(m_robotDrive::zeroHeading, m_robotDrive));
   }
 
@@ -83,6 +93,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
   public Command getAutonomousCommand() {
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(
