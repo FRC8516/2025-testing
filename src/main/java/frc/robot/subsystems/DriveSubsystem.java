@@ -261,7 +261,10 @@ public class DriveSubsystem extends SubsystemBase {
     //@tk return m_pigeon1.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
    return 0.0;
   }
-    RobotConfig config;{
+  /*   
+  RobotConfig config;
+  {
+    /*
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
@@ -293,5 +296,6 @@ public class DriveSubsystem extends SubsystemBase {
             },
              this);
          }
+             */
 } 
   
