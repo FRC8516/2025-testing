@@ -101,13 +101,13 @@ public final class Constants {
   }
   public static final class LimelightConstants{
     // Basic targeting data
-    double tx = LimelightHelpers.getTX("front");  // Horizontal offset from crosshair to target in degrees
-    double ty = LimelightHelpers.getTY("front");  // Vertical offset from crosshair to target in degrees
-    double ta = LimelightHelpers.getTA("front");  // Target area (0% to 100% of image)
-    boolean hasTarget = LimelightHelpers.getTV("front"); // Do you have a valid target?
+    double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
+    double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
+    double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
+    boolean hasTarget = LimelightHelpers.getTV(""); // Do you have a valid target?
 
-    double txnc = LimelightHelpers.getTXNC("front");  // Horizontal offset from principal pixel/point to target in degrees
-    double tync = LimelightHelpers.getTYNC("front");  // Vertical  offset from principal pixel/point to target in degrees
+    double txnc = LimelightHelpers.getTXNC("");  // Horizontal offset from principal pixel/point to target in degrees
+    double tync = LimelightHelpers.getTYNC("");  // Vertical  offset from principal pixel/point to target in degrees
   }
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
