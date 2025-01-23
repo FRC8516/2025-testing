@@ -68,6 +68,8 @@ public class RobotContainer {
         m_robotDrive));
     
     m_driverController.start().onTrue(Commands.runOnce(m_robotDrive::zeroHeading, m_robotDrive));
+    // Use april tags to center bot at reef
+    //m_driverController.rightTrigger().whileTrue();
   }
 
   /**
