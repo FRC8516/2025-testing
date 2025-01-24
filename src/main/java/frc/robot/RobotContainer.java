@@ -39,7 +39,9 @@ public class RobotContainer {
    configureButtonBindings();
    SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure default commands
+    
     m_robotDrive.setDefaultCommand(
+        
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -50,7 +52,8 @@ public class RobotContainer {
                 true,
                 false),
             m_robotDrive));
-  }
+    
+        }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
