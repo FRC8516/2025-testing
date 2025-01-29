@@ -98,16 +98,17 @@ public final class Constants {
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-  }
+  }/* 
   public static final class LimelightConstants{
     // Basic targeting data
-    double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
-    double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
-    double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
-    boolean hasTarget = LimelightHelpers.getTV(""); // Do you have a valid target?
-    double txnc = LimelightHelpers.getTXNC("");  // Horizontal offset from principal pixel/point to target in degrees
-    double tync = LimelightHelpers.getTYNC("");  // Vertical  offset from principal pixel/point to target in degrees
+    double tx = LimelightHelpers.getTX("limelight");  // Horizontal offset from crosshair to target in degrees
+    double ty = LimelightHelpers.getTY("limelight");  // Vertical offset from crosshair to target in degrees
+    double ta = LimelightHelpers.getTA("limelight");  // Target area (0% to 100% of image)
+    boolean hasTarget = LimelightHelpers.getTV("limelight"); // Do you have a valid target?
+    double txnc = LimelightHelpers.getTXNC("limelight");  // Horizontal offset from principal pixel/point to target in degrees
+    double tync = LimelightHelpers.getTYNC("limelight");  // Vertical  offset from principal pixel/point to target in degrees
   }
+    */
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
