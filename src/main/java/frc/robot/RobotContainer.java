@@ -26,9 +26,9 @@ import frc.robot.subsystems.DriveSubsystem;
 public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
-  // The driver's controller
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+   
+ // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   /**
@@ -39,7 +39,9 @@ public class RobotContainer {
    configureButtonBindings();
    SmartDashboard.putData("Auto Chooser", autoChooser);
     // Configure default commands
+    
     m_robotDrive.setDefaultCommand(
+        
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -48,9 +50,10 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true,
-                false),
+                false,Constants.center),
             m_robotDrive));
-  }
+    
+        }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -69,7 +72,8 @@ public class RobotContainer {
     
     m_driverController.start().onTrue(Commands.runOnce(m_robotDrive::zeroHeading, m_robotDrive));
     // Use april tags to center bot at reef
-    //m_driverController.rightTrigger().whileTrue();
+    m_driverController.a().onTrue(Commands.runOnce(m_robotDrive::setTrue, m_robotDrive));
+    
   }
 
   /**
@@ -77,7 +81,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }

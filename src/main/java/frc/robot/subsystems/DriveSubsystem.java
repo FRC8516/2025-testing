@@ -27,10 +27,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.LimelightHelpers;
 import frc.robot.util.SwerveUtils;
 public class DriveSubsystem extends SubsystemBase {
+
   private final Field2d field2d = new Field2d();
   // Create MAXSwerveModules
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
@@ -124,7 +126,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
     drive(chassisSpeeds.vxMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond,
     chassisSpeeds.vyMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond,
-    chassisSpeeds.omegaRadiansPerSecond / DriveConstants.kMaxAngularSpeed, false,false);
+    chassisSpeeds.omegaRadiansPerSecond / DriveConstants.kMaxAngularSpeed, false,false,false);
   }
   /**
    * Returns the currently-estimated pose of the robot.
@@ -151,6 +153,40 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+double limelight_aim_proportional()
+  {    
+    // kP (constant of proportionality)
+    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
+    // if it is too high, the robot will oscillate around.
+    // if it is too low, the robot will never reach its target
+    // if the robot never turns in the correct direction, kP should be inverted.
+    double kP = .035;
+
+    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
+    // your limelight 3 feed, tx should return roughly 31 degrees.
+    double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+
+    // convert to radians per second for our drive method
+    targetingAngularVelocity *= DriveConstants.kMaxAngularSpeed;
+
+    //invert since tx is positive when the target is to the right of the crosshair
+    targetingAngularVelocity *= -1.0;
+
+    return targetingAngularVelocity;
+  }
+
+  // simple proportional ranging control with Limelight's "ty" value
+  // this works best if your Limelight's mount height and target mount height are different.
+  // if your limelight and target are mounted at the same or similar heights, use "ta" (area) for target ranging rather than "ty"
+  double limelight_range_proportional()
+  {    
+    double kP = .1;
+    double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
+    targetingForwardSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
+    targetingForwardSpeed *= -1.0;
+    return targetingForwardSpeed;
+  }
+  
 
    /**
    * Method to drive the robot using joystick info.
@@ -162,7 +198,7 @@ public class DriveSubsystem extends SubsystemBase {
    *                      field.
    * @param rateLimit     Whether to enable rate limiting for smoother control.
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit, boolean centerLimelight) {
     
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -210,11 +246,23 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     } else {
+    if (centerLimelight=true)
+    {
+        final var rot_limelight = limelight_aim_proportional();
+        rot = rot_limelight;
+
+        final var forward_limelight = limelight_range_proportional();
+        xSpeed = forward_limelight;
+
+        //while using Limelight, turn off field-relative driving.
+        fieldRelative = false;
+    }
+
       xSpeedCommanded = xSpeed;
       ySpeedCommanded = ySpeed;
       m_currentRotation = rot;
     }
-
+    
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
     double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
@@ -230,7 +278,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+  
   }
+  public void setTrue(){
+    if (Constants.center = false) {
+      Constants.center = true;
+    }
+    else {
+      Constants.center = false;
+    }
+  }
+  
   /**
    * Sets the wheels into an X formation to prevent movement.
    */
